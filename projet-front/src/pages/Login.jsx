@@ -1,30 +1,24 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Mail, Lock, Store, Crown } from "lucide-react";
-import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "../JS/Actions/Authaction";
+
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState({});
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
+  const loading = useSelector((state) => state.AuthReducer.load);
 
-    try {
-      const res = await axios.post("/api/auth/login", { email, password });
-      if (res.data) {
-        navigate("/");
-      }
-    } catch (err) {
-      setError(err.response?.data?.message || "Login failed");
-    } finally {
-      setLoading(false);
-    }
+  const handleInputChange = (e) => {
+    setUser({ ...user, [e.target.name]: e.target.value });
+  };
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    dispatch(loginUser(user, navigate));
   };
 
   return (
@@ -41,21 +35,19 @@ const Login = () => {
               TuniCart
             </span>
           </Link>
-          <p className="text-blue-500 text-sm tracking-widest uppercase">Premium Marketplace</p>
+          <p className="text-blue-500 text-sm tracking-widest uppercase">
+            Premium Marketplace
+          </p>
         </div>
 
         {/* Login Card */}
         <div className="bg-white border border-blue-100 rounded-2xl shadow-xl p-8">
-          <h2 className="text-3xl font-bold text-slate-800 mb-2">Welcome Back</h2>
+          <h2 className="text-3xl font-bold text-slate-800 mb-2">
+            Welcome Back
+          </h2>
           <p className="text-slate-600 mb-6">Sign in to your premium account</p>
 
-          {error && (
-            <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 rounded-lg text-sm">
-              {error}
-            </div>
-          )}
-
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleLogin} className="space-y-5">
             <div>
               <label className="block text-slate-700 text-sm font-medium mb-2">
                 Email Address
@@ -64,8 +56,8 @@ const Login = () => {
                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-blue-400" />
                 <input
                   type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  name="email"
+                  onChange={handleInputChange}
                   required
                   className="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                   placeholder="your@email.com"
@@ -81,8 +73,8 @@ const Login = () => {
                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-blue-400" />
                 <input
                   type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  name="password"
+                  onChange={handleInputChange}
                   required
                   className="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                   placeholder="••••••••"
@@ -102,7 +94,10 @@ const Login = () => {
           <div className="mt-6 text-center">
             <p className="text-slate-600">
               Don't have an account?{" "}
-              <Link to="/register" className="text-blue-600 hover:text-blue-700 font-semibold">
+              <Link
+                to="/register"
+                className="text-blue-600 hover:text-blue-700 font-semibold"
+              >
                 Become a Vendor
               </Link>
             </p>
