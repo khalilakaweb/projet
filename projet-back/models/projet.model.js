@@ -4,12 +4,16 @@ const mongoose = require('mongoose');
 //define projet schema
 const Schema = mongoose.Schema
 
-//create projet model schema for a small busness project management system
+//create projet model schema for a small business project management system
 
 const businessSchema = new Schema({
     make: {
         type: String,
         required: true,
+    },
+    model: {
+        type: String,
+        required: false,
     },
     description: {
         type: String,
@@ -17,16 +21,20 @@ const businessSchema = new Schema({
     },  
     startDate: {
         type: Date,
-        required: true,
+        required: false,
     },
     endDate: {
         type: Date,
-        required: true, 
+        required: false, 
     },
     status: {
         type: String,
         enum: ['Not Started', 'In Progress', 'Completed'],
         default: 'Not Started',
+    },
+    year: {
+        type: String,
+        required: false,
     },
     price: {
         type: Number,
@@ -35,6 +43,16 @@ const businessSchema = new Schema({
     picture: {
         type: String,
         required: false,
+    },
+    color: {
+        type: String,
+        required: false,
+    },
+    rate: {
+        type: Number,
+        required: false,
+        min: 0,
+        max: 5
     },
 
 }, { timestamps: true });

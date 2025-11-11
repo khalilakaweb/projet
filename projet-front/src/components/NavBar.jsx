@@ -8,6 +8,7 @@ const NavBar = () => {
   const [user, setUser] = useState(null);
   const [cartCount, setCartCount] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
 
   // Fetch user info
   useEffect(() => {
@@ -109,20 +110,29 @@ const NavBar = () => {
                 </Link>
               </>
             ) : (
-              <>
-                <div className="flex items-center gap-3 px-4 py-2 bg-blue-50 border border-blue-100 rounded-xl">
+              <div className="relative">
+                <button
+                  className="flex items-center gap-3 px-4 py-2 bg-blue-50 border border-blue-100 rounded-xl"
+                  onClick={() => setUserMenuOpen(!userMenuOpen)}
+                >
                   <div className="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center">
                     <User className="h-5 w-5 text-white" />
                   </div>
                   <span className="text-sm font-semibold text-slate-700">{user.name}</span>
-                </div>
-                <button
-                  className="p-3 rounded-xl bg-slate-50 hover:bg-red-50 border border-slate-200 hover:border-red-200 transition-all"
-                  onClick={handleLogout}
-                >
-                  <LogOut className="h-5 w-5 text-slate-600" />
                 </button>
-              </>
+                {userMenuOpen && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl border border-blue-100 shadow-xl p-2 z-50">
+                    <Link to="/profile" className="block px-3 py-2 rounded-lg text-slate-700 hover:bg-blue-50">Profile</Link>
+                    <Link to="/settings" className="block px-3 py-2 rounded-lg text-slate-700 hover:bg-blue-50">Settings</Link>
+                    <button
+                      className="w-full text-left px-3 py-2 rounded-lg text-red-600 hover:bg-red-50 flex items-center gap-2"
+                      onClick={handleLogout}
+                    >
+                      <LogOut className="h-4 w-4" /> Logout
+                    </button>
+                  </div>
+                )}
+              </div>
             )}
           </div>
 
@@ -183,6 +193,12 @@ const NavBar = () => {
                   </div>
                   <span className="text-slate-700 font-semibold">{user.name}</span>
                 </div>
+                <Link to="/profile" className="w-full mt-2 px-6 py-3 bg-white border border-blue-100 rounded-xl text-slate-700 hover:bg-blue-50 transition-all text-center">
+                  Profile
+                </Link>
+                <Link to="/settings" className="w-full mt-2 px-6 py-3 bg-white border border-blue-100 rounded-xl text-slate-700 hover:bg-blue-50 transition-all text-center">
+                  Settings
+                </Link>
                 <button
                   className="w-full mt-2 px-6 py-3 bg-slate-50 border border-red-200 hover:bg-red-50 rounded-xl flex items-center gap-3 justify-center text-slate-700 hover:text-red-600 transition-all font-semibold"
                   onClick={handleLogout}

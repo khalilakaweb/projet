@@ -9,11 +9,10 @@ const Register = () => {
     email: "",
     password: "",
     confirmPassword: "",
-    businessName: "",
-    phone: "",
-    address: ""
+    
   });
   const [error, setError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -24,6 +23,7 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setFieldErrors([]);
 
     if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match");
@@ -37,9 +37,6 @@ const Register = () => {
         name: formData.name,
         email: formData.email,
         password: formData.password,
-        businessName: formData.businessName,
-        phone: formData.phone,
-        address: formData.address,
         role: "vendor"
       });
       
@@ -47,7 +44,13 @@ const Register = () => {
         navigate("/login");
       }
     } catch (err) {
-      setError(err.response?.data?.message || "Registration failed");
+      const errors = err.response?.data?.errors;
+      if (Array.isArray(errors) && errors.length) {
+        setError(errors[0]?.msg || "Registration failed");
+        setFieldErrors(errors);
+      } else {
+        setError("Registration failed");
+      }
     } finally {
       setLoading(false);
     }
@@ -79,9 +82,19 @@ const Register = () => {
           <p className="text-slate-600 mb-6">Create your premium business account</p>
 
           {error && (
-            <div className="mb-6 p-3 bg-red-50 border border-red-200 text-red-600 rounded-lg text-sm">
+            <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 rounded-lg text-sm">
               {error}
             </div>
+          )}
+
+          {fieldErrors.length > 0 && (
+            <ul className="mb-6 p-3 bg-red-50 border border-red-200 text-red-700 rounded-lg text-sm list-disc pl-6">
+              {fieldErrors.map((e, i) => (
+                <li key={i}>
+                  {e.field ? `${e.field}: ` : ""}{e.msg}
+                </li>
+              ))}
+            </ul>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-5">

@@ -1,4 +1,4 @@
-const e = require("express");
+const Business = require("../models/projet.model");
 
 //projet test controller
 exports.testProjet = (req, res) => {
@@ -7,12 +7,13 @@ exports.testProjet = (req, res) => {
   } catch (error) {
     res.status(500).send("Server Error 🚨");
   }
+  
 };
 
 // ✅ Add business project controller
 exports.addBusinessProject = async (req, res) => {
   try {
-    const newBusinessProject = new BusinessProject(req.body);
+    const newBusinessProject = new Business(req.body);
     await newBusinessProject.save();
 
     res.status(201).send({
@@ -30,16 +31,10 @@ exports.addBusinessProject = async (req, res) => {
 // ✅ Get all business projects controller
 exports.getAllBusinessProjects = async (req, res) => {
   try {
-    const businessProjects = await BusinessProject.find();
-    if (businessProjects.length === 0) {
-      return res
-        .status(404)
-        .send({ errors: [{ msg: "No business projects found 🚨" }] });
-    }
-
+    const businessProjects = await Business.find();
     res.status(200).send({
       success: [{ msg: "Business projects retrieved successfully ✅" }],
-      businessProjects,
+      businessProjects: businessProjects || [],
     });
   } catch (error) {
     console.error("Error in getting all business projects:", error.message);
@@ -53,7 +48,7 @@ exports.getAllBusinessProjects = async (req, res) => {
 exports.getBusinessProjectById = async (req, res) => {
   try {
     const { id } = req.params;
-    const businessProject = await BusinessProject.findById(id);
+    const businessProject = await Business.findById(id);
 
     if (!businessProject) {
       return res
@@ -77,19 +72,13 @@ exports.getBusinessProjectById = async (req, res) => {
 exports.getBusinessProjectByMake = async (req, res) => {
   try {
     const { make } = req.query;
-    const businessProjects = await BusinessProject.find({
-      maker: { $regex: make, $options: "i" },
+    const businessProjects = await Business.find({
+      make: { $regex: make, $options: "i" },
     });
-
-    if (businessProjects.length === 0) {
-      return res
-        .status(404)
-        .send({ errors: [{ msg: "No business projects found for this maker 🚨" }] });
-    }
 
     res.status(200).send({
       success: [{ msg: "Business projects retrieved successfully ✅" }],
-      businessProjects,
+      businessProjects: businessProjects || [],
     });
   } catch (error) {
     console.error("Error in getting business projects by maker:", error.message);
@@ -103,7 +92,7 @@ exports.getBusinessProjectByMake = async (req, res) => {
 exports.updateBusinessProject = async (req, res) => {
   try {
     const { id } = req.params;
-    const updatedBusinessProject = await BusinessProject.findByIdAndUpdate(
+    const updatedBusinessProject = await Business.findByIdAndUpdate(
       id,
       { $set: req.body },
       { new: true }
@@ -131,7 +120,7 @@ exports.updateBusinessProject = async (req, res) => {
 exports.deleteBusinessProject = async (req, res) => {
   try {
     const { id } = req.params;
-    const deletedBusinessProject = await BusinessProject.findByIdAndDelete(id);
+    const deletedBusinessProject = await Business.findByIdAndDelete(id);
 
     if (!deletedBusinessProject) {
       return res

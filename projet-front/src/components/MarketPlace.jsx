@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Search, Star, Crown, CheckCircle, ShoppingBag, Filter, Tag } from 'lucide-react';
+import AddBusiness from './AddBusiness';
+import EditBusiness from './EditBusiness';
+import DeleteBusiness from './DeleteBusiness';
 
 // Demo Data
 const products = [
@@ -77,6 +81,8 @@ const MarketPlace = () => {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
   const [sort, setSort] = useState("featured");
+  const user = useSelector((state) => state.AuthReducer.user);
+  const isAdmin = user?.role === 'admin';
 
   const filtered = products.filter((p) =>
     (category === "All" || p.tags.includes(category)) &&
@@ -90,7 +96,7 @@ const MarketPlace = () => {
     return b.featured - a.featured;
   });
 
- z
+ 
 
   return (
     <div className="min-h-[85vh] bg-gradient-to-bl from-blue-50 via-white to-slate-100 pb-20">
@@ -115,6 +121,13 @@ const MarketPlace = () => {
           </div>
         </div>
       </section>
+
+      {/* Admin Add Business */}
+      {isAdmin && (
+        <section className="w-full max-w-7xl mx-auto px-4 -mt-6 mb-2">
+          <AddBusiness />
+        </section>
+      )}
 
       {/* Marketplace Filters & Controls */}
       <section className="w-full max-w-7xl mx-auto px-4 mb-4">
@@ -172,6 +185,13 @@ const MarketPlace = () => {
               <div className="text-2xl font-extrabold text-blue-700 tracking-tight mb-2">{product.price} TND</div>
               {product.luxury && <span className="inline-flex items-center gap-1 bg-gradient-to-r from-blue-100 to-blue-50 text-blue-700 rounded-full px-3 py-0.5 text-xs font-semibold"><CheckCircle className="w-4 h-4"/> Luxury</span>}
             </div>
+
+            {isAdmin && product?._id && (
+              <div className="mt-4 flex gap-2">
+                <EditBusiness business={product} />
+                <DeleteBusiness id={product._id} />
+              </div>
+            )}
           </div>
         )) : (
           <div className="col-span-full text-center text-slate-500 text-2xl py-12">No products match your search.</div>

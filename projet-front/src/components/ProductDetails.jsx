@@ -1,4 +1,4 @@
-import { StarIcon } from "@heroicons/react/20/solid";
+import { Star as StarIcon } from "lucide-react";
 
 const product = {
   name: "Basic Tee 6-Pack",
@@ -27,21 +27,9 @@ const product = {
     },
   ],
   colors: [
-    {
-      id: "white",
-      name: "White",
-      classes: "bg-white checked:outline-gray-400",
-    },
-    {
-      id: "gray",
-      name: "Gray",
-      classes: "bg-gray-200 checked:outline-gray-400",
-    },
-    {
-      id: "black",
-      name: "Black",
-      classes: "bg-gray-900 checked:outline-gray-900",
-    },
+    { id: "white", name: "White", classes: "bg-white checked:outline-gray-400" },
+    { id: "gray", name: "Gray", classes: "bg-gray-200 checked:outline-gray-400" },
+    { id: "black", name: "Black", classes: "bg-gray-900 checked:outline-gray-900" },
   ],
   sizes: [
     { name: "XXS", inStock: false },
@@ -54,7 +42,7 @@ const product = {
     { name: "3XL", inStock: true },
   ],
   description:
-    'The Basic Tee 6-Pack allows you to fully express your vibrant personality with three grayscale options. Feeling adventurous? Put on a heather gray tee. Want to be a trendsetter? Try our exclusive colorway: "Black". Need to add an extra pop of color to your outfit? Our white tee has you covered.',
+    'The Basic Tee 6-Pack allows you to fully express your vibrant personality with three grayscale options.',
   highlights: [
     "Hand cut and sewn locally",
     "Dyed with our proprietary colors",
@@ -62,15 +50,16 @@ const product = {
     "Ultra-soft 100% cotton",
   ],
   details:
-    'The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.',
+    'The 6-Pack includes two black, two white, and two heather gray Basic Tees.',
 };
+
 const reviews = { href: "#", average: 4, totalCount: 117 };
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Example() {
+export default function ProductDetails() {
   return (
     <div className="bg-white">
       <div className="pt-6">
@@ -82,10 +71,7 @@ export default function Example() {
             {product.breadcrumbs.map((breadcrumb) => (
               <li key={breadcrumb.id}>
                 <div className="flex items-center">
-                  <a
-                    href={breadcrumb.href}
-                    className="mr-2 text-sm font-medium text-gray-900"
-                  >
+                  <a href={breadcrumb.href} className="mr-2 text-sm font-medium text-gray-900">
                     {breadcrumb.name}
                   </a>
                   <svg
@@ -102,18 +88,13 @@ export default function Example() {
               </li>
             ))}
             <li className="text-sm">
-              <a
-                href={product.href}
-                aria-current="page"
-                className="font-medium text-gray-500 hover:text-gray-600"
-              >
+              <a href={product.href} aria-current="page" className="font-medium text-gray-500 hover:text-gray-600">
                 {product.name}
               </a>
             </li>
           </ol>
         </nav>
 
-        {/* Image gallery */}
         <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-8 lg:px-8">
           <img
             alt={product.images[0].alt}
@@ -137,7 +118,6 @@ export default function Example() {
           />
         </div>
 
-        {/* Product info */}
         <div className="mx-auto max-w-2xl px-4 pt-10 pb-16 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto_auto_1fr] lg:gap-x-8 lg:px-8 lg:pt-16 lg:pb-24">
           <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
             <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
@@ -145,14 +125,10 @@ export default function Example() {
             </h1>
           </div>
 
-          {/* Options */}
           <div className="mt-4 lg:row-span-3 lg:mt-0">
             <h2 className="sr-only">Product information</h2>
-            <p className="text-3xl tracking-tight text-gray-900">
-              {product.price}
-            </p>
+            <p className="text-3xl tracking-tight text-gray-900">{product.price}</p>
 
-            {/* Reviews */}
             <div className="mt-6">
               <h3 className="sr-only">Reviews</h3>
               <div className="flex items-center">
@@ -162,36 +138,26 @@ export default function Example() {
                       key={rating}
                       aria-hidden="true"
                       className={classNames(
-                        reviews.average > rating
-                          ? "text-gray-900"
-                          : "text-gray-200",
+                        reviews.average > rating ? "text-gray-900" : "text-gray-200",
                         "size-5 shrink-0"
                       )}
                     />
                   ))}
                 </div>
                 <p className="sr-only">{reviews.average} out of 5 stars</p>
-                <a
-                  href={reviews.href}
-                  className="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500"
-                >
+                <a href={reviews.href} className="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500">
                   {reviews.totalCount} reviews
                 </a>
               </div>
             </div>
 
             <form className="mt-10">
-              {/* Colors */}
               <div>
                 <h3 className="text-sm font-medium text-gray-900">Color</h3>
-
                 <fieldset aria-label="Choose a color" className="mt-4">
                   <div className="flex items-center gap-x-3">
                     {product.colors.map((color) => (
-                      <div
-                        key={color.id}
-                        className="flex rounded-full outline -outline-offset-1 outline-black/10"
-                      >
+                      <div key={color.id} className="flex rounded-full outline -outline-offset-1 outline-black/10">
                         <input
                           defaultValue={color.id}
                           defaultChecked={color === product.colors[0]}
@@ -209,14 +175,10 @@ export default function Example() {
                 </fieldset>
               </div>
 
-              {/* Sizes */}
               <div className="mt-10">
                 <div className="flex items-center justify-between">
                   <h3 className="text-sm font-medium text-gray-900">Size</h3>
-                  <a
-                    href="#"
-                    className="text-sm font-medium text-indigo-600 hover:text-indigo-500"
-                  >
+                  <a href="#" className="text-sm font-medium text-indigo-600 hover:text-indigo-500">
                     Size guide
                   </a>
                 </div>
@@ -225,12 +187,12 @@ export default function Example() {
                   <div className="grid grid-cols-4 gap-3">
                     {product.sizes.map((size) => (
                       <label
-                        key={size.id}
+                        key={size.name}
                         aria-label={size.name}
                         className="group relative flex items-center justify-center rounded-md border border-gray-300 bg-white p-3 has-checked:border-indigo-600 has-checked:bg-indigo-600 has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-indigo-600 has-disabled:border-gray-400 has-disabled:bg-gray-200 has-disabled:opacity-25"
                       >
                         <input
-                          defaultValue={size.id}
+                          defaultValue={size.name}
                           defaultChecked={size === product.sizes[2]}
                           name="size"
                           type="radio"
@@ -256,18 +218,14 @@ export default function Example() {
           </div>
 
           <div className="py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pt-6 lg:pr-8 lg:pb-16">
-            {/* Description and details */}
             <div>
               <h3 className="sr-only">Description</h3>
-
               <div className="space-y-6">
                 <p className="text-base text-gray-900">{product.description}</p>
               </div>
             </div>
-
             <div className="mt-10">
               <h3 className="text-sm font-medium text-gray-900">Highlights</h3>
-
               <div className="mt-4">
                 <ul role="list" className="list-disc space-y-2 pl-4 text-sm">
                   {product.highlights.map((highlight) => (
@@ -278,10 +236,8 @@ export default function Example() {
                 </ul>
               </div>
             </div>
-
             <div className="mt-10">
               <h2 className="text-sm font-medium text-gray-900">Details</h2>
-
               <div className="mt-4 space-y-6">
                 <p className="text-sm text-gray-600">{product.details}</p>
               </div>
@@ -292,3 +248,5 @@ export default function Example() {
     </div>
   );
 }
+
+
